@@ -1,21 +1,38 @@
 package com.example.studentappnew_backend.controller;
 
 import com.example.studentappnew_backend.Model.Students;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.studentappnew_backend.doa.StudentDoa;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class Studentcontroller {
+    @Autowired
+    public StudentDoa dao;
+    @CrossOrigin(origins = "*")
     @GetMapping("/")
     public String Homepage(){
         return "Welcome to my webpage";
     }
+    @CrossOrigin(origins = "*")
     @PostMapping(path = "/add" , consumes = "application/json" ,produces = "application/json")
-    public String AddStudent(@RequestBody Students s){
+    public HashMap<String,String> AddStudent(@RequestBody Students s){
         System.out.println(s.getName().toString());
-        return "Successfully added";
+        System.out.println(s.getAdmno().toString());
+        System.out.println(s.getRollno());
+        System.out.println(s.getCollege().toString());
+        dao.save(s);
+        HashMap<String,String> map=new HashMap<>();
+        map.put("status","success");
+        return map;
+    }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/view")
+    public List<Students> StudentView(){
+        return (List<Students>) dao.findAll();
     }
 
 }
