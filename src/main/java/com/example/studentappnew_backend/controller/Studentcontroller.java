@@ -43,4 +43,16 @@ public class Studentcontroller {
 
     }
 
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/delete",consumes = "application/json",produces = "application/json")
+    public HashMap<String,String> Delete(@RequestBody Students s)
+    {
+        String id=String.valueOf(s.getId());
+        System.out.println(id);
+        dao.delete(s.getId());
+        HashMap<String,String> map=new HashMap<>();
+        map.put("status","success");
+        return map;
+    }
+
 }
